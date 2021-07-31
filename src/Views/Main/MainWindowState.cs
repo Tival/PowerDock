@@ -1,36 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Media.Imaging;
+﻿using System.Collections.ObjectModel;
 
 namespace Psd.Wpf.Views.Main {
-    public class Shortcut {
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public BitmapImage Icon { get; set; }
+    public class Note {
+        public string Title { get; set; }
+        public string Content { get; set; }
     }
 
     public class MainWindowState {
-        private Shortcut _selectedShortcut;
+        private Note _selectedNote;
 
-        public ObservableCollection<Shortcut> Shortcuts { get; set; }
-        public Shortcut SelectedShortcut {
+        public ObservableCollection<Note> Notes { get; set; }
+        public Note SelectedNote {
             get {
-                return _selectedShortcut;
+                return _selectedNote;
             }
             set {
                 if (value != null) {
-                    if (File.Exists(value.Path))
-                        Process.Start(value.Path);
-
-                    _selectedShortcut = value;
+                    _selectedNote = value;
                 }
             }
         }
 
         public MainWindowState() {
-            Shortcuts = new ObservableCollection<Shortcut>();
+            Notes = new ObservableCollection<Note>();
         }
     }
 }

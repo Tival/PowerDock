@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.IO;
+﻿using System.Collections.Specialized;
 using System.Windows;
 using Psd.Wpf.EventEmiters;
 namespace Psd.Wpf.Views.Main {
@@ -13,7 +11,7 @@ namespace Psd.Wpf.Views.Main {
         public MainWindow() {
             InitializeComponent();
             state = new MainWindowState();
-            state.Shortcuts.CollectionChanged += OnUpdateShortcuts;
+            state.Notes.CollectionChanged += OnUpdateNotes;
             DataContext = state;
 
             Width = 300;
@@ -34,9 +32,9 @@ namespace Psd.Wpf.Views.Main {
             mousePosition.StartTracking();
         }
 
-        private void OnUpdateShortcuts(object sender, NotifyCollectionChangedEventArgs e) {
-            ShortcutsListBox.ItemsSource = null;
-            ShortcutsListBox.ItemsSource = state.Shortcuts;
+        private void OnUpdateNotes(object sender, NotifyCollectionChangedEventArgs e) {
+            NotesListBox.ItemsSource = null;
+            NotesListBox.ItemsSource = state.Notes;
         }
 
         private void MouseOutPosition(double x, double y, PositionRectangle position) {
@@ -51,18 +49,11 @@ namespace Psd.Wpf.Views.Main {
             }
         }
 
-        private void Grid_Drop(object sender, DragEventArgs e) {
-            var paths = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-            foreach(var path in paths) {
-                var fileName = Path.GetFileName(path);
-
-                state.Shortcuts.Add(new Shortcut() {
-                    Icon = null,
-                    Name = fileName,
-                    Path = path
-                });
-            }
+        private void CreateNoteButton_Click(object sender, RoutedEventArgs e) {
+            state.Notes.Add(new Note() {
+                Title = "Hello world",
+                Content = "Hello world of content"
+            });
         }
     }
 }

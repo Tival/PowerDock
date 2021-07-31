@@ -7,18 +7,38 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="450" Width="300"
-        Drop="Grid_Drop"
         AllowDrop="True"
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="NoResize"
         Background="Black"
-        Opacity="0.8"
+        Opacity="1"
         Topmost="True"
         ShowInTaskbar="False">
-    <Grid Background="Black">
-        <ListBox BorderThickness="0" BorderBrush="Transparent" ItemsSource="{Binding Shortcuts}" Background="Black" Name="ShortcutsListBox" HorizontalContentAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding SelectedShortcut, Mode=OneWayToSource}">
+    <Grid Background="Black" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <ListBox BorderThickness="0" BorderBrush="Transparent" ItemsSource="{Binding Notes}" Background="Black" Name="NotesListBox" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Margin" Value="0 5 0 5"/>
+                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                 <Style TargetType="ListBoxItem">
                     <Style.Resources>
                         <!-- Background of selected item when focussed -->
@@ -35,20 +55,43 @@
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Background="Gray" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="48"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
-                        <Path Width="23" Height="28" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill" Fill="WhiteSmoke" Data="F1 M 20,17L 44,17L 56,29L 56,59L 20,59L 20,17 Z M 24,21L 24,55L 52,55L 52,34L 39,34L 39,21L 24,21 Z M 43,21L 43,30L 52,30L 43,21 Z "/>
-                        <TextBlock Grid.Column="1" Margin="10,10,10,10" Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="WhiteSmoke" />
+                        <TextBox Grid.Row="0" Text="{Binding Title}" BorderThickness="0" Background="#448aff" Foreground="White" FontSize="20"/>
+                        <TextBox Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" BorderThickness="0 0 0 0" BorderBrush="White" MinHeight="32" Background="#0A0A0A" Foreground="White" Text="{Binding Content, Mode=TwoWay}" VerticalScrollBarVisibility="Auto"></TextBox>
+                        <!--<Path Width="23" Height="28" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill" Fill="WhiteSmoke" Data="F1 M 20,17L 44,17L 56,29L 56,59L 20,59L 20,17 Z M 24,21L 24,55L 52,55L 52,34L 39,34L 39,21L 24,21 Z M 43,21L 43,30L 52,30L 43,21 Z "/>
+                        <TextBlock Grid.Column="1" Margin="10,10,10,10" Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="WhiteSmoke" />-->
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button x:Name="CreateNoteButton" Content="Create note" Grid.Row="1" BorderThickness="0" BorderBrush="Transparent" Click="CreateNoteButton_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#448aff"/>
+                    <Setter Property="Foreground" Value="#ffffff"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#2979ff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>
