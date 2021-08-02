@@ -12,6 +12,7 @@ An application written in WPF and C# that allow you to have quick access to the 
  - [x] Basic styles (no borders, back window with opacity)
  - [x] Notes text boxes
  - [x] Move to MVVM
+ - [x] Delete Notes
  - [x] Somekind of persistance (Database or something) (LiteDB choosed).
  - [x] Move to Dotnet Core when the WPF support apear.
 
@@ -19,7 +20,6 @@ An application written in WPF and C# that allow you to have quick access to the 
 
  - [ ] List item
  - [ ] Autostart support from application level
- - [ ] Delete Shortcuts & Notes
  - [ ] Styles
  - [ ] Support icons of the files (in the first step - predefinied, in second - proper icons).
  - [ ] Settings Panel
