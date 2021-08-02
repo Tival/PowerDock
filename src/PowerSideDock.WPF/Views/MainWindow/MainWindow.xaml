@@ -18,7 +18,8 @@
         Top="{Binding WindowTop, Mode=TwoWay}"
         Left="{Binding WindowLeft, Mode=TwoWay}"
         Visibility="{Binding WindowVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"
-        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+        Name="Root">
     <Grid Background="Black" Margin="10" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -62,6 +63,7 @@
                     <Grid Background="Gray">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
@@ -69,6 +71,7 @@
                         </Grid.RowDefinitions>
                         <TextBox 
                             Grid.Row="0" 
+                            Grid.Column="0"
                             Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             Foreground="#AAAAAA" 
                             FontSize="20"
@@ -76,8 +79,21 @@
                             Style="{StaticResource NoteTextBoxStyle}"
                          />
 
+                        <Button x:Name="DeleteNoteButton" 
+                                Content="DEL"
+                                Grid.Row="0" 
+                                Grid.Column="1"
+                                BorderThickness="0"
+                                BorderBrush="Transparent"
+                                Command="{Binding ElementName=Root, Path=DataContext.DeleteNoteCommand, Mode=OneWay}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=DataContext}"
+                                Style="{StaticResource CreateNoteButtonStyle}"
+                         />
+
                         <TextBox 
                             Grid.Row="1" 
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
                             Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap"
                             AcceptsReturn="True" 
@@ -91,6 +107,8 @@
                             VerticalScrollBarVisibility="Auto"
                             Style="{StaticResource NoteTextBoxStyle}"
                          />
+
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

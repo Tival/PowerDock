@@ -85,22 +85,35 @@ namespace PowerSideDock.WPF.Views.MainWindow {
         public ICommand CreateNoteCommand {
             get {
                 if (createNoteCommand == null) {
-                    createNoteCommand = new RelayCommand(CreateNote());
+                    createNoteCommand = new RelayCommand(CreateNote);
                 }
                 return createNoteCommand;
             }
         }
 
-        private Action CreateNote() {
-            return () => {
-                var note = new Note() {
-                    Title = "Hello world",
-                    Content = "Hello world of content!"
-                };
+        private ICommand deleteNoteCommand;
+        public ICommand DeleteNoteCommand {
+            get {
+                if (deleteNoteCommand == null) {
+                    deleteNoteCommand = new RelayCommand<Note>(DeleteNote);
+                }
+                return deleteNoteCommand;
+            }
+        }
 
-                noteRepository.Create(note);
-                NoteList.Add(note);
+        private void DeleteNote(Note note) {
+            NoteList.Remove(note);
+            noteRepository.Remove(note);
+        }
+
+        private void CreateNote() {
+            var note = new Note() {
+                Title = "Hello world",
+                Content = "Hello world of content!"
             };
+
+            noteRepository.Create(note);
+            NoteList.Add(note);
         }
 
         private void InitializeWindowPlacement() {
