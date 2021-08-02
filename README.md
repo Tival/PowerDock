@@ -17,8 +17,6 @@ An application written in WPF and C# that allow you to have quick access to the 
  - [x] Move to Dotnet Core when the WPF support apear.
 
 # ToDo
-
- - [ ] List item
  - [ ] Autostart support from application level
  - [ ] Styles
  - [ ] Support icons of the files (in the first step - predefinied, in second - proper icons).
