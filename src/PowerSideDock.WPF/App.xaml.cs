@@ -1,14 +1,13 @@
-﻿using Psd.Wpf.Views.Main;
+﻿using PowerSideDock.WPF.Views.MainWindow;
 using System.Windows;
 
-namespace Psd.Wpf {
+namespace PowerSideDock.WPF {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
         private void Application_Startup(object sender, StartupEventArgs e) {
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+            new MainWindow().Show();
         }
     }
 }

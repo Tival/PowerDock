@@ -1,4 +1,4 @@
-﻿namespace Psd.Wpf.EventEmiters {
+﻿namespace PowerSideDock.WPF.EventEmiters {
     public class PositionRectangle {
         public double XMin { get; set; }
         public double XMax { get; set; }

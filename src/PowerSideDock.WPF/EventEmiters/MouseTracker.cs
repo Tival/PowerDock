@@ -1,11 +1,10 @@
-﻿using Psd.Wpf.EventEmiters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Psd.Wpf.EventEmiters {
+namespace PowerSideDock.WPF.EventEmiters {
     [StructLayout(LayoutKind.Sequential)]
     public struct POINT {
         public int X;
