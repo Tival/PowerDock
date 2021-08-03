@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PowerSideDock.WPF"
+        xmlns:extensions="clr-namespace:PowerSideDock.WPF.Extensions"
         mc:Ignorable="d"
         Title="Power Dock" 
         WindowStyle="None"
@@ -19,8 +20,16 @@
         Left="{Binding WindowLeft, Mode=TwoWay}"
         Visibility="{Binding WindowVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+        xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        Activated="Root_Activated"
         Name="Root">
-    <Grid Background="Black" Margin="10" >
+
+    <Behaviors:Interaction.Triggers>
+        <Behaviors:EventTrigger EventName="Deactivated">
+            <Behaviors:InvokeCommandAction Command="{Binding WindowLostFocus, Mode=OneWay}"/>
+        </Behaviors:EventTrigger>
+    </Behaviors:Interaction.Triggers>
+    <Grid Background="Black" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
@@ -69,25 +78,26 @@
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
+
                         <TextBox 
                             Grid.Row="0" 
                             Grid.Column="0"
-                            Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            Foreground="#AAAAAA" 
-                            FontSize="20"
+                            Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="NoWrap"
+                            AcceptsReturn="False" 
+                            BorderThickness="2 0 0 0" 
+                            BorderBrush="#448aff"
+                            MinHeight="32" 
+                            Background="#0A0A0A" 
+                            Foreground="White"
+                            FontSize="18"
                             Padding="5 0 0 0"
+                            VerticalContentAlignment="Center"
+                            VerticalScrollBarVisibility="Disabled"
+                            IsTabStop="True"
+                            TabIndex="1"
+                            AcceptsTab="False"
                             Style="{StaticResource NoteTextBoxStyle}"
-                         />
-
-                        <Button x:Name="DeleteNoteButton" 
-                                Content="DEL"
-                                Grid.Row="0" 
-                                Grid.Column="1"
-                                BorderThickness="0"
-                                BorderBrush="Transparent"
-                                Command="{Binding ElementName=Root, Path=DataContext.DeleteNoteCommand, Mode=OneWay}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=DataContext}"
-                                Style="{StaticResource CreateNoteButtonStyle}"
                          />
 
                         <TextBox 
@@ -99,13 +109,27 @@
                             AcceptsReturn="True" 
                             BorderThickness="2 0 0 0" 
                             BorderBrush="#448aff"
-                            MinHeight="32" 
+                            MinHeight="48" 
                             Background="#0A0A0A" 
                             Foreground="White"
-                            
+                            IsTabStop="True"
+                            AcceptsTab="False"
+                            TabIndex="2"
                             Padding="5 10 5 10"
                             VerticalScrollBarVisibility="Auto"
                             Style="{StaticResource NoteTextBoxStyle}"
+                         />
+
+                        <Button x:Name="DeleteNoteButton" 
+                                Content="DEL"
+                                Grid.Row="0" 
+                                Grid.Column="1"
+                                BorderThickness="0"
+                                BorderBrush="Transparent"
+                                IsTabStop="False"
+                                Command="{Binding ElementName=Root, Path=DataContext.DeleteNoteCommand, Mode=OneWay}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=DataContext}"
+                                Style="{StaticResource CreateNoteButtonStyle}"
                          />
 
 
@@ -119,6 +143,7 @@
                 BorderBrush="Transparent"
                 Command="{Binding CreateNoteCommand, Mode=OneWay}"
                 Style="{StaticResource CreateNoteButtonStyle}"
+                IsTabStop="False"
          />
     </Grid>
 </Window>

@@ -9,7 +9,7 @@ namespace Psd.Wpf.Converters {
             if ((bool)value)
                 return Visibility.Visible;
 
-            return Visibility.Collapsed;
+            return Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

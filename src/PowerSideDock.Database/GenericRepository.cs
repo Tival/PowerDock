@@ -17,7 +17,10 @@ namespace PowerSideDock.Database {
         }
 
         public List<T> Find(Expression<Func<T, bool>> expression, int? skip = null, int? take = null) {
-            var query = collection.Query().Where(expression);
+            var query = collection
+                .Query()
+                .OrderByDescending(x => x.Id)
+                .Where(expression);
 
             if (skip != null && take != null) {
                 return query.Skip(skip.Value).Limit(take.Value).ToList();

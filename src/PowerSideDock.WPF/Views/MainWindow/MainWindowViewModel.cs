@@ -24,6 +24,15 @@ namespace PowerSideDock.WPF.Views.MainWindow {
             InitializeWindowPlacement();
             InitializeMouseTracker();
             RepositoryLoadNotes();
+            RegisterHotKey();
+        }
+
+        private void RegisterHotKey() {
+            var hotKey = new HotKey(Key.F9, KeyModifier.Ctrl | KeyModifier.Shift, OnHotKey);
+        }
+
+        private void OnHotKey(HotKey obj) {
+            this.WindowVisible = !this.WindowVisible;
         }
 
         private double windowWidth;
@@ -101,6 +110,24 @@ namespace PowerSideDock.WPF.Views.MainWindow {
             }
         }
 
+        private ICommand windowLostFocus;
+        public ICommand WindowLostFocus {
+            get {
+                if (windowLostFocus == null) {
+                    windowLostFocus = new RelayCommand(LostFocus);
+                }
+                return windowLostFocus;
+            }
+        }
+
+        private void LostFocus() {
+            this.WindowVisible = false;
+
+            var updatedNotes = NoteList.Where(x => x.WasChanged()).ToList();
+            noteRepository.Update(updatedNotes);
+            updatedNotes.ForEach(note => note.ResetChangeTracker());
+        }
+
         private void DeleteNote(Note note) {
             NoteList.Remove(note);
             noteRepository.Remove(note);
@@ -108,12 +135,12 @@ namespace PowerSideDock.WPF.Views.MainWindow {
 
         private void CreateNote() {
             var note = new Note() {
-                Title = "Hello world",
-                Content = "Hello world of content!"
+                Title = "",
+                Content = ""
             };
 
             noteRepository.Create(note);
-            NoteList.Add(note);
+            NoteList.Insert(0, note);
         }
 
         private void InitializeWindowPlacement() {
@@ -131,7 +158,7 @@ namespace PowerSideDock.WPF.Views.MainWindow {
             var yMax = SystemParameters.VirtualScreenHeight;
 
             mouseTracker.OnCursorInside += MouseInPosition;
-            mouseTracker.OnCursorOutside += MouseOutPosition;
+            // mouseTracker.OnCursorOutside += MouseOutPosition;
             mouseTracker.RegisterPositionRectangle(xMin, xMax, yMin, yMax);
             mouseTracker.StartTracking();
         }
@@ -141,15 +168,15 @@ namespace PowerSideDock.WPF.Views.MainWindow {
             RaisePropertyChanged("NoteList");
         }
 
-        private void MouseOutPosition(double x, double y, PositionRectangle position) {
-            if (this.WindowVisible != false) {
-                this.WindowVisible = false;
+        //private void MouseOutPosition(double x, double y, PositionRectangle position) {
+        //    if (this.WindowVisible != false) {
+        //        this.WindowVisible = false;
 
-                var updatedNotes = NoteList.Where(x => x.WasChanged()).ToList();
-                noteRepository.Update(updatedNotes);
-                updatedNotes.ForEach(note => note.ResetChangeTracker());
-            }
-        }
+        //        var updatedNotes = NoteList.Where(x => x.WasChanged()).ToList();
+        //        noteRepository.Update(updatedNotes);
+        //        updatedNotes.ForEach(note => note.ResetChangeTracker());
+        //    }
+        //}
 
         private void MouseInPosition(double x, double y, PositionRectangle position) {
             if (x > (position.XMax - 5)) {
